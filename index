@@ -1,0 +1,21 @@
+@app.route('/repo-languages')
+def repo_languages():
+    # Construct the URL for the GitHub API endpoint
+    owner = 'charlottegreenaway'
+    repo = 'charlotte'
+    url = f'https://api.github.com/repos/{owner}/{repo}/languages'
+
+    # Make a GET request to the API
+    response = requests.get(url)
+
+    # Get the language data from the response as a dictionary
+    languages = response.json()
+
+    # Calculate the total number of lines in the repository
+    total_lines = sum(languages.values())
+
+    # Calculate the percentage of each language used
+    percentages = {lang: count/total_lines*100 for lang, count in languages.items()}
+
+    # Return the language data and percentages as a JSON response
+    return jsonify(percentages)
